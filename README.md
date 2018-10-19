@@ -1,6 +1,6 @@
 # web-mapping
 
-Place for me to play around with different web-mapping libraries. 
+Place for me to play around with different JavaScript web-mapping libraries. 
 
 
 
