@@ -12,15 +12,7 @@ function init() {
 
 window.addEventListener('DOMContentLoaded', init)
 
-var map = L.map('map').setView([40, -100], 5);
-
-//L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-//    maxZoom: 18,
-//    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-//        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-//        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-//    id: 'mapbox.streets'
-//}).addTo(map);
+var map = L.map('map').setView([40, -100], 4);
 
 var basemap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
 	"attribution": null,
@@ -64,9 +56,6 @@ function add_polygons(data, tabletop) {
     	style: {"color": "#2ca25f", "fillColor": "#99d8c9", "weight": 1.5}
   	}).addTo(map);
 }
-
-// "style": {"color": "#2ca25f", "fillColor": "#99d8c9", "weight": 1.5}}
-
 
 function add_points(data, tabletop) {
 	for (var row in data) {
