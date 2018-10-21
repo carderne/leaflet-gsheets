@@ -4,7 +4,7 @@ Example repository for a project using [Leaflet](https://leafletjs.com/) and [Ta
 
 To get started, fork this repo and use the .CSV files in the data-sources folder as examples to create the Google Sheets data source.
 
-The resultant map can be seen here: https://rdrn.me/leaflet-gsheets/leaflet-gsheets.html
+The resultant map can be seen here: [https://rdrn.me/leaflet-gsheets/leaflet-gsheets.html](https://rdrn.me/leaflet-gsheets/leaflet-gsheets.html)
 
 I explained the process in more length in my blog post here: [Leaflet maps with data from Google Sheets](https://rdrn.me/leaflet-maps-google-sheets/).
 
