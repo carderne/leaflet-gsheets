@@ -1,0 +1,51 @@
+[
+ {
+   "lat": 37,
+   "long": -120,
+   "category": "Bag Ban",
+   "location": "San Francisco",
+   "level": "State"
+ },
+ {
+   "lat": 40,
+   "long": -116,
+   "category": "Recycling",
+   "location": "Bozeman",
+   "level": "Local"
+ },
+ {
+   "lat": 34,
+   "long": -108,
+   "category": "Bag Ban",
+   "location": "Dallas",
+   "level": "Municipal"
+ },
+ {
+   "lat": 44,
+   "long": -95,
+   "category": "Recycling",
+   "location": "Denver",
+   "level": "State"
+ },
+ {
+   "lat": 43,
+   "long": -72,
+   "category": "Recycling",
+   "location": "Bellingham",
+   "level": "State"
+ },
+ {
+   "lat": 37,
+   "long": -77,
+   "category": "Recycling",
+   "location": "New York",
+   "level": "District"
+ },
+ {
+   "lat": 29,
+   "long": -83,
+   "category": "Bag Ban",
+   "location": "Barcelona",
+   "level": "Municipal"
+ }
+]
