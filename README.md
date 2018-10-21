@@ -1,27 +1,13 @@
-# web-mapping
+# leaflet-gsheets
 
-Place for me to play around with different JavaScript web-mapping libraries. 
+Example repository for a project using [Leaflet](https://leafletjs.com/) and [Tabletop.js](https://github.com/jsoma/tabletop) to display a web map that automatically pulls data from two simple Google Sheets tables.
 
+To get started, fork this repo and use the .CSV files in the data-sources folder as examples to create the Google Sheets data source.
 
+The resultant map can be seen here: https://rdrn.me/leaflet-gsheets/leaflet-gsheets.html
 
-## Leaflet points
-
-[https://rdrn.me/web-mapping/leaflet-points/leaflet-points.html](https://rdrn.me/web-mapping/leaflet-points/leaflet-points.html)
-
-
-
-## Leaflet polygons with GeoJSON
-
-[https://rdrn.me/web-mapping/leaflet-polygons/leaflet-polygons.html](https://rdrn.me/web-mapping/leaflet-polygons/leaflet-polygons.html)
-
-
-
-## MapBox points
-
-[https://rdrn.me/web-mapping/mapbox-points/mapbox-points.html](https://rdrn.me/web-mapping/mapbox-points/mapbox-points.html)
-
-
+I explained the process in more length in my blog post here: [Leaflet maps with data from Google Sheets](https://rdrn.me/leaflet-maps-google-sheets/).
 
 ## Folium and gspread
 
-[https://rdrn.me/web-mapping/folium-gspread/folium-gspread.html](https://rdrn.me/web-mapping/folium-gspread/folium-gspread.html)
+I also did another version (code in the folium-gspread folder) recreating this using only Python and the [Folium](https://github.com/python-visualization/folium) library. This requires a server instance running to update the map, however. The output map is identical to the one created above.
