@@ -10,7 +10,7 @@ $.getJSON("https://rdrn.me/leaflet-gsheets/data-sources/US-states-leaflet.json",
     addPolygons(json);
 });
 
-$.getJSON("https://rdrn.me/leaflet-gsheets/data-sources/US-environmental-laws.json", function(json) {
+$.getJSON("https://rdrn.me/leaflet-gsheets/data-sources/US-points.json", function(json) {
     addPoints(json);
 });
 
@@ -119,7 +119,7 @@ function addPoints(data) {
 
 	for(var row = 0; row < data.length; row++) {
     	var marker = L.marker([data[row].lat, data[row].long]).addTo(pointGroupLayer);
-      	marker.bindPopup("<h2>"+data[row].location+"</h2>"+data[row].category+" regulations at "+data[row].level+" level");
+      	marker.bindPopup("<h2>"+data[row].location+"</h2>"+data[row].category+" present that are "+data[row].level+" establishments");
 
       	// AwesomeMarkers is used to create fancier icons
       	var icon = L.AwesomeMarkers.icon({
@@ -138,9 +138,9 @@ function addPoints(data) {
 // Used for the points layer
 function getColor(type) {
 	switch (type) {
-		case "Bag Ban":
+		case "Coffee Shop":
 			return "green";
-		case "Recycling":
+		case "Restaurant":
 			return "blue";
 		default:
 			return "green";

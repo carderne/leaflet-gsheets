@@ -2,50 +2,50 @@
  {
    "lat": 37,
    "long": -120,
-   "category": "Bag Ban",
+   "category": "Coffee Shop",
    "location": "San Francisco",
-   "level": "State"
+   "level": "Chain"
  },
  {
    "lat": 40,
    "long": -116,
-   "category": "Recycling",
+   "category": "Restaurant",
    "location": "Bozeman",
    "level": "Local"
  },
  {
    "lat": 34,
    "long": -108,
-   "category": "Bag Ban",
+   "category": "Coffee Shop",
    "location": "Dallas",
-   "level": "Municipal"
+   "level": "Local"
  },
  {
    "lat": 44,
    "long": -95,
-   "category": "Recycling",
+   "category": "Restaurant",
    "location": "Denver",
-   "level": "State"
+   "level": "Chain"
  },
  {
    "lat": 43,
    "long": -72,
-   "category": "Recycling",
+   "category": "Restaurant",
    "location": "Bellingham",
-   "level": "State"
+   "level": "Chain"
  },
  {
    "lat": 37,
    "long": -77,
-   "category": "Recycling",
+   "category": "Restaurant",
    "location": "New York",
-   "level": "District"
+   "level": "Local"
  },
  {
    "lat": 29,
    "long": -83,
-   "category": "Bag Ban",
+   "category": "Coffee Shop",
    "location": "Barcelona",
-   "level": "Municipal"
+   "level": "Local"
  }
 ]
