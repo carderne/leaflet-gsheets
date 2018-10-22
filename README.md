@@ -1,6 +1,6 @@
 # leaflet-gsheets
 
-Example repository for a project using [Leaflet](https://leafletjs.com/) and [Tabletop.js](https://github.com/jsoma/tabletop) to display a web map that automatically pulls data from two simple Google Sheets tables (as well as preload from JSON files for speed and in case the Googlle API changes).
+Example repository for a project using [Leaflet](https://leafletjs.com/) and [Tabletop.js](https://github.com/jsoma/tabletop) to display a web map that automatically pulls data from two simple Google Sheets tables (as well as preload from JSON files for speed and in case the Googlle API changes). Sidebar created using [leaflet-sidebar-v2](https://github.com/nickpeihl/leaflet-sidebar-v2).
 
 To get started, fork this repo and use the .CSV files in the data-sources folder as examples to create the Google Sheets data source.
 
