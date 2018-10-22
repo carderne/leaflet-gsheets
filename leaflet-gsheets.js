@@ -42,6 +42,28 @@ var basemap = L.tileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/li
 });
 basemap.addTo(map);
 
+var sidebar = L.control.sidebar({
+	container: 'sidebar',
+	closeButton: false,
+	position: 'right'
+}).addTo(map);
+
+panelID = 'my-info-panel'
+var panelContent = {
+    id: panelID,                     // UID, used to access the panel
+    tab: '<i class="fa fa-bars active"></i>',  // content can be passed as HTML string,
+    pane: '<p id="sidebar-content"></p>',        // DOM elements can be passed, too
+    title: '<h2 id="sidebar-title"> No state selected</h2>',              // an optional pane header
+    position: 'top'                  // optional vertical alignment, defaults to 'top'
+};
+sidebar.addPanel(panelContent);
+
+map.on('click', function (feature, layer) {
+	sidebar.close(panelID);
+	//$('#sidebar-title').text("No state selected");
+	//$('#sidebar-content').text("");
+});
+
 // These are declared outisde the functions so that the functions can check if they already exist
 var polygonLayer;
 var pointGroupLayer;
@@ -87,10 +109,9 @@ function addPolygons(data) {
   	// The polygons are styled slightly differently on mouse hovers
   	var poylgonStyle = {"color": "#2ca25f", "fillColor": "#99d8c9", "weight": 1.5};
 	var polygonHoverStyle = {"color": "green", "fillColor": "#2ca25f", "weight": 3};
-
+	
   	polygonLayer = L.geoJSON(geojsonStates, {
     	onEachFeature: function (feature, layer) {
-      		layer.bindPopup("<h2>"+feature.properties.name+"</h2><p>"+feature.properties.summary+"</p>");
       		layer.on({
       			mouseout: function(e) {
                     e.target.setStyle(poylgonStyle);
@@ -102,11 +123,19 @@ function addPolygons(data) {
                 	// This zooms the map to the clicked polygon
                 	// Not always desirable
                     // map.fitBounds(e.target.getBounds());
+
+                    // if this isn't added, then map.click is also fired!
+                    // https://stackoverflow.com/questions/35466139/map-on-click-fires-when-geojson-is-clicked-on-leaflet-1-0
+                    L.DomEvent.stopPropagation(e); 
+
+                	$('#sidebar-title').text(e.target.feature.properties.name);
+					$('#sidebar-content').text(e.target.feature.properties.summary);
+					sidebar.open(panelID);
                 }
       		});
     	},
     	style: poylgonStyle
-  	}).addTo(map);
+  	}).addTo(map);  	
 }
 
 // addPoints is a bit simpler, as no GeoJSON is needed for the points
