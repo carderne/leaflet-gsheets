@@ -148,7 +148,7 @@ function addPoints(data) {
 
 	for(var row = 0; row < data.length; row++) {
     	var marker = L.marker([data[row].lat, data[row].long]).addTo(pointGroupLayer);
-      	marker.bindPopup("<h2>"+data[row].location+"</h2>"+data[row].category+" present that are "+data[row].level+" establishments");
+      	marker.bindPopup("<h2>"+data[row].location+"</h2>There's a "+data[row].level+" "+data[row].category+" here");
 
       	// AwesomeMarkers is used to create fancier icons
       	var icon = L.AwesomeMarkers.icon({
