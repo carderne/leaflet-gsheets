@@ -2,7 +2,14 @@
 
 Example repository for a project using [Leaflet](https://leafletjs.com/) and [Tabletop.js](https://github.com/jsoma/tabletop) to display a web map that automatically pulls data from two simple Google Sheets tables (as well as preload from JSON files for speed and in case the Googlle API changes). Sidebar created using [leaflet-sidebar-v2](https://github.com/nickpeihl/leaflet-sidebar-v2).
 
-To get started, fork this repo and use the .CSV files in the data-sources folder as examples to create the Google Sheets data source.
+To get started, fork this repo and make copies of the following two Google Sheets:
+- [Polys](https://docs.google.com/spreadsheets/d/1EUFSaqi30b6oefK0YWWNDDOzwmCTTXlXkFHAc2QrUxM/edit?usp=sharing)
+- [Points](https://docs.google.com/spreadsheets/d/1kjJVPF0LyaiaDYF8z_x23UulGciGtBALQ1a1pK0coRM/edit?usp=sharing)
+
+You will then need to do three things with each one:
+- In Google Sheets, go File -> Publish to the Web -> Publish
+- Then click Share in the top right, click Get Shareable Link, ensure "Anyone with the link can view" and copy the link
+- Paste this link into [leaflet-gsheets.js](leaflet-gsheets.js) starting at line 20 where it says "PASTE YOUR URLs HERE"
 
 The resultant map can be seen here: [https://rdrn.me/leaflet-gsheets/leaflet-gsheets.html](https://rdrn.me/leaflet-gsheets/leaflet-gsheets.html)
 
