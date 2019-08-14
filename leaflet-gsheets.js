@@ -6,11 +6,11 @@
  */
 
 // The two getJSON calls load the localy stored JSONs and call the appropriate functions
-$.getJSON("https://rdrn.me/leaflet-gsheets/data/polys.json", function(json) {
+$.getJSON("data/polys.json", function(json) {
   addPolygons(json);
 });
 
-$.getJSON("https://rdrn.me/leaflet-gsheets/data/points.json", function(json) {
+$.getJSON("data/points.json", function(json) {
   addPoints(json);
 });
 
