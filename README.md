@@ -11,7 +11,7 @@ You will then need to do three things with each one:
 - Then click Share in the top right, click Get Shareable Link, ensure "Anyone with the link can view" and copy the link
 - Paste this link into [leaflet-gsheets.js](leaflet-gsheets.js) starting at line 20 where it says "PASTE YOUR URLs HERE"
 
-The resultant map can be seen here: [https://rdrn.me/leaflet-gsheets/leaflet-gsheets.html](https://rdrn.me/leaflet-gsheets/leaflet-gsheets.html)
+The resultant map can be seen here: [https://rdrn.me/leaflet-gsheets/](https://rdrn.me/leaflet-gsheets/)
 
 I explained the process in more length in my blog post here: [Leaflet maps with data from Google Sheets](https://rdrn.me/leaflet-maps-google-sheets/).
 
