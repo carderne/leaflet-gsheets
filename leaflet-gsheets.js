@@ -54,7 +54,7 @@ var panelContent = {
   id: panelID,                     // UID, used to access the panel
   tab: '<i class="fa fa-bars active"></i>',  // content can be passed as HTML string,
   pane: '<p id="sidebar-content"></p>',        // DOM elements can be passed, too
-  title: '<h2 id="sidebar-title"> No state selected</h2>',              // an optional pane header
+  title: '<h2 id="sidebar-title">No state selected</h2>',              // an optional pane header
   position: 'top'                  // optional vertical alignment, defaults to 'top'
 };
 sidebar.addPanel(panelContent);
@@ -149,7 +149,25 @@ function addPoints(data) {
 
   for(var row = 0; row < data.length; row++) {
     var marker = L.marker([data[row].lat, data[row].long]).addTo(pointGroupLayer);
-    marker.bindPopup("<h2>"+data[row].location+"</h2>There's a "+data[row].level+" "+data[row].category+" here");
+
+    // UNCOMMENT THIS LINE TO USE POPUPS
+    //marker.bindPopup("<h2>"+data[row].location+"</h2>There's a "+data[row].level+" "+data[row].category+" here");
+
+    // COMMENT THE NEXT 14 LINES TO DISABLE SIDEBAR FOR THE MARKERS
+    marker.feature = {
+      properties: {
+        location: data[row].location,
+        category: data[row].category
+      }
+    }
+    marker.on({
+        click: function(e) {
+          L.DomEvent.stopPropagation(e);
+          $('#sidebar-title').text(e.target.feature.properties.location);
+          $('#sidebar-content').text(e.target.feature.properties.category);
+          sidebar.open(panelIDcategory
+        }
+    });
 
     // AwesomeMarkers is used to create fancier icons
     var icon = L.AwesomeMarkers.icon({
@@ -160,7 +178,6 @@ function addPoints(data) {
       extraClasses: "fa-rotate-0"
     });
     marker.setIcon(icon);
-
   }
 }
 
