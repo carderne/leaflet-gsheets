@@ -134,6 +134,7 @@
 .leaflet-sidebar-close {
   position: absolute;
   top: 0;
+  color: #fff;
   width: 40px;
   height: 40px;
   text-align: center;

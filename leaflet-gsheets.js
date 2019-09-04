@@ -1,27 +1,18 @@
 
 /*
  * Script to display two tables from Google Sheets as point and polygon layers using Leaflet
- * Starts by importing JSONs representing the data to provide faster loading (and in case Google changes their API)
  * The Sheets are then imported using Tabletop.js and overwrite the initially laded layers
  */
 
-// The two getJSON calls load the localy stored JSONs and call the appropriate functions
-$.getJSON("data/polys.json", function(json) {
-  addPolygons(json);
-});
-
-$.getJSON("data/points.json", function(json) {
-  addPoints(json);
-});
 
 // init() is called as soon as the page loads
 function init() {
 
   // PASTE YOUR URLs HERE
-  // these URLs come from Google Sheets "shareable link" form
+  // these URLs come from Google Sheets 'shareable link' form
   // the first is the polygon layer and the second the points
-  var polyURL = "https://docs.google.com/spreadsheets/d/1EUFSaqi30b6oefK0YWWNDDOzwmCTTXlXkFHAc2QrUxM/edit?usp=sharing";
-  var pointsURL = "https://docs.google.com/spreadsheets/d/1kjJVPF0LyaiaDYF8z_x23UulGciGtBALQ1a1pK0coRM/edit?usp=sharing";
+  var polyURL = 'https://docs.google.com/spreadsheets/d/1EUFSaqi30b6oefK0YWWNDDOzwmCTTXlXkFHAc2QrUxM/edit?usp=sharing';
+  var pointsURL = 'https://docs.google.com/spreadsheets/d/1kjJVPF0LyaiaDYF8z_x23UulGciGtBALQ1a1pK0coRM/edit?usp=sharing';
 
   Tabletop.init( { key: polyURL,
     callback: addPolygons,
@@ -30,39 +21,36 @@ function init() {
     callback: addPoints,
     simpleSheet: true } );  // simpleSheet assumes there is only one table and automatically sends its data
 }
-window.addEventListener("DOMContentLoaded", init);
+window.addEventListener('DOMContentLoaded', init);
 
 // Create a new Leaflet map centered on the continental US
-var map = L.map("map").setView([40, -100], 4);
+var map = L.map('map').setView([40, -100], 4);
 
 // This is the Carto Positron basemap
-var basemap = L.tileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png", {
+var basemap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-  subdomains: "abcd",
+  subdomains: 'abcd',
   maxZoom: 19
 });
 basemap.addTo(map);
 
 var sidebar = L.control.sidebar({
   container: 'sidebar',
-  closeButton: false,
+  closeButton: true,
   position: 'right'
 }).addTo(map);
 
 panelID = 'my-info-panel'
 var panelContent = {
-  id: panelID,                     // UID, used to access the panel
-  tab: '<i class="fa fa-bars active"></i>',  // content can be passed as HTML string,
-  pane: '<p id="sidebar-content"></p>',        // DOM elements can be passed, too
-  title: '<h2 id="sidebar-title">No state selected</h2>',              // an optional pane header
-  position: 'top'                  // optional vertical alignment, defaults to 'top'
+  id: panelID,
+  tab: '<i class="fa fa-bars active"></i>',
+  pane: '<p id="sidebar-content"></p>',
+  title: '<h2 id="sidebar-title">No state selected</h2>',
 };
 sidebar.addPanel(panelContent);
 
 map.on('click', function (feature, layer) {
   sidebar.close(panelID);
-  //$('#sidebar-title').text("No state selected");
-  //$('#sidebar-content').text("");
 });
 
 // These are declared outisde the functions so that the functions can check if they already exist
@@ -82,34 +70,34 @@ function addPolygons(data) {
   // Start with an empty GeoJSON of type FeatureCollection
   // All the rows will be inserted into a single GeoJSON
   var geojsonStates = {
-    "type": "FeatureCollection",
-    "features": []
+    'type': 'FeatureCollection',
+    'features': []
   };
 
   for (var row in data) {
-    // The Sheets data has a column "include" that specifies if that row should be mapped
-    if (data[row].include == "y") {
+    // The Sheets data has a column 'include' that specifies if that row should be mapped
+    if (data[row].include == 'y') {
       var coords = JSON.parse(data[row].geometry);
 
       geojsonStates.features.push({
-        "type": "Feature",
-        "geometry": {
-          "type": "MultiPolygon",
-          "coordinates": coords
+        'type': 'Feature',
+        'geometry': {
+          'type': 'MultiPolygon',
+          'coordinates': coords
         },
-        "properties": {
-          "name": data[row].name,
-          "summary": data[row].summary,
-          "state": data[row].state,
-          "local": data[row].local,
+        'properties': {
+          'name': data[row].name,
+          'summary': data[row].summary,
+          'state': data[row].state,
+          'local': data[row].local,
         }
       });
     }
   }
 
   // The polygons are styled slightly differently on mouse hovers
-  var polygonStyle = {"color": "#2ca25f", "fillColor": "#99d8c9", "weight": 1.5};
-  var polygonHoverStyle = {"color": "green", "fillColor": "#2ca25f", "weight": 3};
+  var polygonStyle = {'color': '#2ca25f', 'fillColor': '#99d8c9', 'weight': 1.5};
+  var polygonHoverStyle = {'color': 'green', 'fillColor': '#2ca25f', 'weight': 3};
 
   polygonLayer = L.geoJSON(geojsonStates, {
     onEachFeature: function (feature, layer) {
@@ -122,15 +110,13 @@ function addPolygons(data) {
         },
         click: function(e) {
           // This zooms the map to the clicked polygon
-          // Not always desirable
           // map.fitBounds(e.target.getBounds());
 
           // if this isn't added, then map.click is also fired!
-          // https://stackoverflow.com/questions/35466139/map-on-click-fires-when-geojson-is-clicked-on-leaflet-1-0
           L.DomEvent.stopPropagation(e);
 
-          $('#sidebar-title').text(e.target.feature.properties.name);
-          $('#sidebar-content').text(e.target.feature.properties.summary);
+          document.getElementById('sidebar-title').innerHTML = e.target.feature.properties.name;
+          document.getElementById('sidebar-content').innerHTML = e.target.feature.properties.summary;
           sidebar.open(panelID);
         }
       });
@@ -151,7 +137,7 @@ function addPoints(data) {
     var marker = L.marker([data[row].lat, data[row].long]).addTo(pointGroupLayer);
 
     // UNCOMMENT THIS LINE TO USE POPUPS
-    //marker.bindPopup("<h2>"+data[row].location+"</h2>There's a "+data[row].level+" "+data[row].category+" here");
+    //marker.bindPopup('<h2>' + data[row].location + '</h2>There's a ' + data[row].level + ' ' + data[row].category + ' here');
 
     // COMMENT THE NEXT 14 LINES TO DISABLE SIDEBAR FOR THE MARKERS
     marker.feature = {
@@ -163,19 +149,19 @@ function addPoints(data) {
     marker.on({
       click: function(e) {
         L.DomEvent.stopPropagation(e);
-        $('#sidebar-title').text(e.target.feature.properties.location);
-        $('#sidebar-content').text(e.target.feature.properties.category);
+        document.getElementById('sidebar-title').innerHTML = e.target.feature.properties.location;
+        document.getElementById('sidebar-content').innerHTML = e.target.feature.properties.category;
         sidebar.open(panelID);
       }
     });
 
     // AwesomeMarkers is used to create fancier icons
     var icon = L.AwesomeMarkers.icon({
-      icon: "info-sign",
-      iconColor: "white",
+      icon: 'info-sign',
+      iconColor: 'white',
       markerColor: getColor(data[row].category),
-      prefix: "glyphicon",
-      extraClasses: "fa-rotate-0"
+      prefix: 'glyphicon',
+      extraClasses: 'fa-rotate-0'
     });
     marker.setIcon(icon);
   }
@@ -185,12 +171,11 @@ function addPoints(data) {
 // Used for the points layer
 function getColor(type) {
   switch (type) {
-    case "Coffee Shop":
-      return "green";
-    case "Restaurant":
-      return "blue";
+    case 'Coffee Shop':
+      return 'green';
+    case 'Restaurant':
+      return 'blue';
     default:
-      return "green";
-
+      return 'green';
   }
 }
