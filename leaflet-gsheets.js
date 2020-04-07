@@ -139,9 +139,8 @@ function addPoints(data) {
   pointGroupLayer = L.layerGroup().addTo(map);
 
   for (var row = 0; row < data.length; row++) {
-    var marker = L.marker([data[row].lat, data[row].long]).addTo(
-      pointGroupLayer
-    );
+    var marker = L.marker([data[row].lat, data[row].lon]);
+    marker.addTo(pointGroupLayer);
 
     // UNCOMMENT THIS LINE TO USE POPUPS
     //marker.bindPopup('<h2>' + data[row].location + '</h2>There's a ' + data[row].level + ' ' + data[row].category + ' here');
