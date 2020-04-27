@@ -6,6 +6,8 @@ The resultant map can be seen here: [https://rdrn.me/leaflet-gsheets/](https://r
 
 I explained the process in more length in my blog post here: [Leaflet maps with data from Google Sheets](https://rdrn.me/leaflet-maps-google-sheets/).
 
+![example](example.png)
+
 ## Steps
 1. Open the following two Google Sheets and copy them to your account (top left, "Add to My Drive")
     - [Polys](https://docs.google.com/spreadsheets/d/1EUFSaqi30b6oefK0YWWNDDOzwmCTTXlXkFHAc2QrUxM/edit?usp=sharing)
