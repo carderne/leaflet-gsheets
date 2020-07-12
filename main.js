@@ -29,7 +29,7 @@ function init() {
 window.addEventListener("DOMContentLoaded", init);
 
 // Create a new Leaflet map centered on the continental US
-let map = L.map("map").setView([40, -100], 4);
+let map = L.map("map").setView([51.5, -0.1], 14);
 
 // This is the Carto Positron basemap
 let basemap = L.tileLayer(
@@ -56,7 +56,7 @@ let panelContent = {
   id: panelID,
   tab: "<i class='fa fa-bars active'></i>",
   pane: "<p id='sidebar-content'></p>",
-  title: "<h2 id='sidebar-title'>No state selected</h2>",
+  title: "<h2 id='sidebar-title'>Nothing selected</h2>",
 };
 sidebar.addPanel(panelContent);
 
@@ -65,14 +65,12 @@ map.on("click", function () {
 });
 
 // The form of data must be a JSON representation of a table as returned by PapaParse
-// addGeoms first checks if the map layer has already been assigned, and if so, deletes it and makes a fresh one
-// The assumption is that the locally stored JSONs will load before PapaParse can pull the external data from Google Sheets
 function addGeoms(data) {
   data = data.data;
   // Need to convert the PapaParse JSON into a GeoJSON
   // Start with an empty GeoJSON of type FeatureCollection
   // All the rows will be inserted into a single GeoJSON
-  let geojsonStates = {
+  let fc = {
     type: "FeatureCollection",
     features: [],
   };
@@ -84,20 +82,18 @@ function addGeoms(data) {
       features.forEach((el) => {
         el.properties = {
           name: data[row].name,
-          summary: data[row].summary,
-          state: data[row].state,
-          local: data[row].local,
+          description: data[row].description,
         };
-        geojsonStates.features.push(el);
+        fc.features.push(el);
       });
     }
   }
 
   // The geometries are styled slightly differently on mouse hovers
-  let geomStyle = { color: "#2ca25f", fillColor: "#99d8c9", weight: 1.5 };
+  let geomStyle = { color: "#2ca25f", fillColor: "#99d8c9", weight: 2 };
   let geomHoverStyle = { color: "green", fillColor: "#2ca25f", weight: 3 };
 
-  L.geoJSON(geojsonStates, {
+  L.geoJSON(fc, {
     onEachFeature: function (feature, layer) {
       layer.on({
         mouseout: function (e) {
@@ -117,7 +113,7 @@ function addGeoms(data) {
           document.getElementById("sidebar-title").innerHTML =
             e.target.feature.properties.name;
           document.getElementById("sidebar-content").innerHTML =
-            e.target.feature.properties.summary;
+            e.target.feature.properties.description;
           sidebar.open(panelID);
         },
       });
@@ -160,22 +156,22 @@ function addPoints(data) {
     marker.addTo(pointGroupLayer);
 
     // UNCOMMENT THIS LINE TO USE POPUPS
-    //marker.bindPopup('<h2>' + data[row].location + '</h2>There's a ' + data[row].level + ' ' + data[row].category + ' here');
+    //marker.bindPopup('<h2>' + data[row].name + '</h2>There's a ' + data[row].description + ' here');
 
     // COMMENT THE NEXT GROUP OF LINES TO DISABLE SIDEBAR FOR THE MARKERS
     marker.feature = {
       properties: {
-        location: data[row].location,
-        category: data[row].category,
+        name: data[row].name,
+        description: data[row].description,
       },
     };
     marker.on({
       click: function (e) {
         L.DomEvent.stopPropagation(e);
         document.getElementById("sidebar-title").innerHTML =
-          e.target.feature.properties.location;
+          e.target.feature.properties.name;
         document.getElementById("sidebar-content").innerHTML =
-          e.target.feature.properties.category;
+          e.target.feature.properties.description;
         sidebar.open(panelID);
       },
     });
@@ -185,27 +181,13 @@ function addPoints(data) {
     let icon = L.AwesomeMarkers.icon({
       icon: "info-circle",
       iconColor: "white",
-      markerColor: getColor(data[row].category),
+      markerColor: data[row].color,
       prefix: "fa",
       extraClasses: "fa-rotate-0",
     });
     if (!markerType.includes("circle")) {
       marker.setIcon(icon);
     }
-  }
-}
-
-// Returns different colors depending on the string passed
-// Used for the points layer
-/*eslint indent: [2, 2, {"SwitchCase": 1}]*/
-function getColor(type) {
-  switch (type) {
-    case "Coffee Shop":
-      return "green";
-    case "Restaurant":
-      return "blue";
-    default:
-      return "green";
   }
 }
 
