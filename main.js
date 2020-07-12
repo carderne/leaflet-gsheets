@@ -80,15 +80,15 @@ function addGeoms(data) {
   for (let row in data) {
     // The Sheets data has a column 'include' that specifies if that row should be mapped
     if (data[row].include == "y") {
-      geojsonStates.features.push({
-        type: "Feature",
-        geometry: JSON.parse(data[row].geometry),
-        properties: {
+      let features = parseGeom(JSON.parse(data[row].geometry));
+      features.forEach((el) => {
+        el.properties = {
           name: data[row].name,
           summary: data[row].summary,
           state: data[row].state,
           local: data[row].local,
-        },
+        };
+        geojsonStates.features.push(el);
       });
     }
   }
@@ -206,5 +206,37 @@ function getColor(type) {
       return "blue";
     default:
       return "green";
+  }
+}
+
+function parseGeom(gj) {
+  // FeatureCollection
+  if (gj.type == "FeatureCollection") {
+    return gj.features;
+  }
+
+  // Feature
+  else if (gj.type == "Feature") {
+    return [gj];
+  }
+
+  // Geometry
+  else if ("type" in gj) {
+    return [{ type: "Feature", geometry: gj }];
+  }
+
+  // Coordinates
+  else {
+    let type;
+    if (typeof gj[0] == "number") {
+      type = "Point";
+    } else if (typeof gj[0][0] == "number") {
+      type = "LineString";
+    } else if (typeof gj[0][0][0] == "number") {
+      type = "Polygon";
+    } else {
+      type = "MultiPolygon";
+    }
+    return [{ type: "Feature", geometry: { type: type, coordinates: gj } }];
   }
 }

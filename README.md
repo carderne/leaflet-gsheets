@@ -1,7 +1,7 @@
 # leaflet-gsheets
 
 
-### ⚠️ Note for people who've forked this in the past
+### Note for people who've forked this in the past ⚠️
 This previously used [Tabletop.js](https://github.com/jsoma/tabletop) but apparently it will stop working in September 2020 (thanks Google), so I've switched this repo over to [PapaParse](https://github.com/mholt/PapaParse). Anyone using the old code should try to switch over!
 
 ### For new people, nothing to worry about! 👍
@@ -31,19 +31,41 @@ I explained the process in more length in my blog post here: [Leaflet maps with 
 8. Customise the JavaScript however you want, there are comments to show where to comment/uncomment code to enable/disable features.
 
 ## Adding geometry data
-In the [leaflet_geoms](https://docs.google.com/spreadsheets/d/1EUFSaqi30b6oefK0YWWNDDOzwmCTTXlXkFHAc2QrUxM/edit?usp=sharing) sheet, the geometry column contains the [GeoJSON](https://geojson.org/) representation of each... geometry. If you're getting this from a `.geojson` file, you only need to include the `geometry` part (at some points I'll work on making `leaflet-gsheets` a bit more flexible. This can be a point, line, polygon, or 'multi' version of any of these.
+In [leaflet_points](https://docs.google.com/spreadsheets/d/1kjJVPF0LyaiaDYF8z_x23UulGciGtBALQ1a1pK0coRM/edit?usp=sharing) you can add latitude/longitude pairs for points.
+
+In the [leaflet_geoms](https://docs.google.com/spreadsheets/d/1EUFSaqi30b6oefK0YWWNDDOzwmCTTXlXkFHAc2QrUxM/edit?usp=sharing) sheet, you can add **points**, **lines**, **polygons** or multi-version of these, as [GeoJSON](https://geojson.io/) representations. This can be the full contents of a `.geojson` file, or really any part of a GeoJSON that ultimately contains a geometry with coordinates.
 
 A good website to use to make these geometries is [geojson.io](http://geojson.io) and a good place to find and download geometries for standard things (continents, countries and whatnot) is [geojson.xyz](http://geojson.xyz/).
 
-An example of a line with two segments/three points. Note that the 'front-matter' about type, FeatureCollection, properties etc has been left out.
+Some examples. Note that these exclude the "FeatureCollection", "Feature" etc boilerplate, but you can include these and it will work just the same.
+
 ```
+// A Point
+{
+    "type": "Point",
+    "coordinates": [18, 36]
+}
+
+// A LinteString (a line)
 {
     "type": "LineString",
     "coordinates": [
-        [0.70, 41.9],
-        [4.57, 17.3],
-        [26.0, 28.1]
+        [1, 42],
+        [5, 17],
+        [6, 28]
     ]
+}
+
+// A Polygon (this one happens to be a square)
+{
+    "type": "Polygon",
+    "coordinates": [[
+        [0, 40],
+        [3, 40],
+        [3, 42],
+        [0, 42],
+        [0, 40]
+      ]]
 }
 ```
 
