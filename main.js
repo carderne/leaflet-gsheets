@@ -1,7 +1,7 @@
 /* global L Papa */
 
 /*
- * Script to display two tables from Google Sheets as point and polygon layers using Leaflet
+ * Script to display two tables from Google Sheets as point and geometry layers using Leaflet
  * The Sheets are then imported using PapaParse and overwrite the initially laded layers
  */
 
@@ -9,16 +9,16 @@
 function init() {
   // PASTE YOUR URLs HERE
   // these URLs come from Google Sheets 'shareable link' form
-  // the first is the polygon layer and the second the points
-  let polyURL =
+  // the first is the geometry layer and the second the points
+  let geomURL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsAyA0Hpk_-WpKyN1dfqi5IPEIC3rqEiL-uwElxJpw_U7BYntc8sDw-8sWsL87JCDU4lVg2aNi65ES/pub?output=csv";
   let pointsURL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFQw9sVY16eQmN5TIjOH7CUaxeZnl_v6LcdE2goig1pSe9I3hipeOn1sOwmC4fS0AURefRWwcKExct/pub?output=csv";
 
-  Papa.parse(polyURL, {
+  Papa.parse(geomURL, {
     download: true,
     header: true,
-    complete: addPolygons,
+    complete: addGeoms,
   });
   Papa.parse(pointsURL, {
     download: true,
@@ -64,20 +64,11 @@ map.on("click", function () {
   sidebar.close(panelID);
 });
 
-// These are declared outisde the functions so that the functions can check if they already exist
-let polygonLayer;
-let pointGroupLayer;
-
 // The form of data must be a JSON representation of a table as returned by PapaParse
-// addPolygons first checks if the map layer has already been assigned, and if so, deletes it and makes a fresh one
+// addGeoms first checks if the map layer has already been assigned, and if so, deletes it and makes a fresh one
 // The assumption is that the locally stored JSONs will load before PapaParse can pull the external data from Google Sheets
-function addPolygons(data) {
+function addGeoms(data) {
   data = data.data;
-  if (polygonLayer != null) {
-    // If the layer exists, remove it and continue to make a new one with data
-    polygonLayer.remove();
-  }
-
   // Need to convert the PapaParse JSON into a GeoJSON
   // Start with an empty GeoJSON of type FeatureCollection
   // All the rows will be inserted into a single GeoJSON
@@ -89,14 +80,9 @@ function addPolygons(data) {
   for (let row in data) {
     // The Sheets data has a column 'include' that specifies if that row should be mapped
     if (data[row].include == "y") {
-      let coords = JSON.parse(data[row].geometry);
-
       geojsonStates.features.push({
         type: "Feature",
-        geometry: {
-          type: "MultiPolygon",
-          coordinates: coords,
-        },
+        geometry: JSON.parse(data[row].geometry),
         properties: {
           name: data[row].name,
           summary: data[row].summary,
@@ -107,21 +93,22 @@ function addPolygons(data) {
     }
   }
 
-  // The polygons are styled slightly differently on mouse hovers
-  let polygonStyle = { color: "#2ca25f", fillColor: "#99d8c9", weight: 1.5 };
-  let polygonHoverStyle = { color: "green", fillColor: "#2ca25f", weight: 3 };
+  // The geometries are styled slightly differently on mouse hovers
+  let geomStyle = { color: "#2ca25f", fillColor: "#99d8c9", weight: 1.5 };
+  let geomHoverStyle = { color: "green", fillColor: "#2ca25f", weight: 3 };
 
-  polygonLayer = L.geoJSON(geojsonStates, {
+  L.geoJSON(geojsonStates, {
     onEachFeature: function (feature, layer) {
       layer.on({
         mouseout: function (e) {
-          e.target.setStyle(polygonStyle);
+          e.target.setStyle(geomStyle);
         },
         mouseover: function (e) {
-          e.target.setStyle(polygonHoverStyle);
+          e.target.setStyle(geomHoverStyle);
         },
         click: function (e) {
-          // This zooms the map to the clicked polygon
+          // This zooms the map to the clicked geometry
+          // Uncomment to enable
           // map.fitBounds(e.target.getBounds());
 
           // if this isn't added, then map.click is also fired!
@@ -135,7 +122,7 @@ function addPolygons(data) {
         },
       });
     },
-    style: polygonStyle,
+    style: geomStyle,
   }).addTo(map);
 }
 
@@ -143,10 +130,7 @@ function addPolygons(data) {
 // It does the same check to overwrite the existing points layer once the Google Sheets data comes along
 function addPoints(data) {
   data = data.data;
-  if (pointGroupLayer != null) {
-    pointGroupLayer.remove();
-  }
-  pointGroupLayer = L.layerGroup().addTo(map);
+  let pointGroupLayer = L.layerGroup().addTo(map);
 
   // Choose marker type. Options are:
   // (these are case-sensitive, defaults to marker!)
@@ -178,7 +162,7 @@ function addPoints(data) {
     // UNCOMMENT THIS LINE TO USE POPUPS
     //marker.bindPopup('<h2>' + data[row].location + '</h2>There's a ' + data[row].level + ' ' + data[row].category + ' here');
 
-    // COMMENT THE NEXT 14 LINES TO DISABLE SIDEBAR FOR THE MARKERS
+    // COMMENT THE NEXT GROUP OF LINES TO DISABLE SIDEBAR FOR THE MARKERS
     marker.feature = {
       properties: {
         location: data[row].location,
@@ -195,6 +179,7 @@ function addPoints(data) {
         sidebar.open(panelID);
       },
     });
+    // COMMENT UNTIL HERE TO DISABLE SIDEBAR FOR THE MARKERS
 
     // AwesomeMarkers is used to create fancier icons
     let icon = L.AwesomeMarkers.icon({
