@@ -5,16 +5,60 @@
  * The Sheets are then imported using PapaParse and overwrite the initially laded layers
  */
 
-// init() is called as soon as the page loads
-function init() {
-  // PASTE YOUR URLs HERE
-  // these URLs come from Google Sheets 'shareable link' form
-  // the first is the geometry layer and the second the points
-  let geomURL =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsAyA0Hpk_-WpKyN1dfqi5IPEIC3rqEiL-uwElxJpw_U7BYntc8sDw-8sWsL87JCDU4lVg2aNi65ES/pub?output=csv";
-  let pointsURL =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFQw9sVY16eQmN5TIjOH7CUaxeZnl_v6LcdE2goig1pSe9I3hipeOn1sOwmC4fS0AURefRWwcKExct/pub?output=csv";
+// PASTE YOUR URLs HERE
+// these URLs come from Google Sheets 'shareable link' form
+// the first is the geometry layer and the second the points
+let geomURL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTsAyA0Hpk_-WpKyN1dfqi5IPEIC3rqEiL-uwElxJpw_U7BYntc8sDw-8sWsL87JCDU4lVg2aNi65ES/pub?output=csv";
+let pointsURL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSFQw9sVY16eQmN5TIjOH7CUaxeZnl_v6LcdE2goig1pSe9I3hipeOn1sOwmC4fS0AURefRWwcKExct/pub?output=csv";
 
+window.addEventListener("DOMContentLoaded", init);
+
+let map;
+let sidebar;
+let panelID = "my-info-panel";
+
+/*
+ * init() is called when the page has loaded
+ */
+function init() {
+  // Create a new Leaflet map centered on the continental US
+  map = L.map("map").setView([51.5, -0.1], 14);
+
+  // This is the Carto Positron basemap
+  L.tileLayer(
+    "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png",
+    {
+      attribution:
+        "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> &copy; <a href='http://cartodb.com/attributions'>CartoDB</a>",
+      subdomains: "abcd",
+      maxZoom: 19,
+    }
+  ).addTo(map);
+
+  sidebar = L.control
+    .sidebar({
+      container: "sidebar",
+      closeButton: true,
+      position: "right",
+    })
+    .addTo(map);
+
+  let panelContent = {
+    id: panelID,
+    tab: "<i class='fa fa-bars active'></i>",
+    pane: "<p id='sidebar-content'></p>",
+    title: "<h2 id='sidebar-title'>Nothing selected</h2>",
+  };
+  sidebar.addPanel(panelContent);
+
+  map.on("click", function () {
+    sidebar.close(panelID);
+  });
+
+  // Use PapaParse to load data from Google Sheets
+  // And call the respective functions to add those to the map.
   Papa.parse(geomURL, {
     download: true,
     header: true,
@@ -26,45 +70,11 @@ function init() {
     complete: addPoints,
   });
 }
-window.addEventListener("DOMContentLoaded", init);
 
-// Create a new Leaflet map centered on the continental US
-let map = L.map("map").setView([51.5, -0.1], 14);
-
-// This is the Carto Positron basemap
-let basemap = L.tileLayer(
-  "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png",
-  {
-    attribution:
-      "&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> &copy; <a href='http://cartodb.com/attributions'>CartoDB</a>",
-    subdomains: "abcd",
-    maxZoom: 19,
-  }
-);
-basemap.addTo(map);
-
-let sidebar = L.control
-  .sidebar({
-    container: "sidebar",
-    closeButton: true,
-    position: "right",
-  })
-  .addTo(map);
-
-let panelID = "my-info-panel";
-let panelContent = {
-  id: panelID,
-  tab: "<i class='fa fa-bars active'></i>",
-  pane: "<p id='sidebar-content'></p>",
-  title: "<h2 id='sidebar-title'>Nothing selected</h2>",
-};
-sidebar.addPanel(panelContent);
-
-map.on("click", function () {
-  sidebar.close(panelID);
-});
-
-// The form of data must be a JSON representation of a table as returned by PapaParse
+/*
+ * Expects a JSON representation of the table with properties columns
+ * and a 'geometry' column that can be parsed by parseGeom()
+ */
 function addGeoms(data) {
   data = data.data;
   // Need to convert the PapaParse JSON into a GeoJSON
@@ -122,8 +132,9 @@ function addGeoms(data) {
   }).addTo(map);
 }
 
-// addPoints is a bit simpler, as no GeoJSON is needed for the points
-// It does the same check to overwrite the existing points layer once the Google Sheets data comes along
+/*
+ * addPoints is a bit simpler, as no GeoJSON is needed for the points
+ */
 function addPoints(data) {
   data = data.data;
   let pointGroupLayer = L.layerGroup().addTo(map);
@@ -191,6 +202,11 @@ function addPoints(data) {
   }
 }
 
+/*
+ * Accepts any GeoJSON-ish object and returns an Array of
+ * GeoJSON Features. Attempts to guess the geometry type
+ * when a bare coordinates Array is supplied.
+ */
 function parseGeom(gj) {
   // FeatureCollection
   if (gj.type == "FeatureCollection") {
