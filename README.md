@@ -1,6 +1,5 @@
 # leaflet-gsheets
 
-
 ### Note for people who've forked this in the past ⚠️
 This previously used [Tabletop.js](https://github.com/jsoma/tabletop) but apparently it will stop working in September 2020 (thanks Google), so I've switched this repo over to [PapaParse](https://github.com/mholt/PapaParse). Anyone using the old code should try to switch over!
 
@@ -22,11 +21,12 @@ I explained the process in more length in my blog post here: [Leaflet maps with 
    - Choose "Comma-separated values (.csv)" in the dropdown on the right
    - Then copy the link provided just underneath, and save it somewhere
 3. Back in GitHub, Fork this repo (top right of this page)
-4. Either clone/download your new repo to your machine, or use GitHub's built-in code editor, and open [leaflet-gsheets.js](leaflet-gsheets.js)
-5. At line 20 where it says "PASTE YOUR URLs HERE", paste the URLs you copied above
+4. Either clone/download your new repo to your machine, or use GitHub's built-in code editor, and open [main.js](main.js)
+5. At line 7 where it says "PASTE YOUR URLs HERE", paste the URLs you copied above
 6. If you want to display your new website using [GitHub Pages](https://pages.github.com/):
+    - Go to the GitHub page for your repository
     - Click Settings -> go down to GitHub Pages -> under Source choose master branch
-    - It may take a while, but the site should become available at [your-username.github.io/leaflet-gsheets](https://your-username.github.io/leaflet-gsheets)
+    - It may take a while, but the site should become available at `your-username.github.io/leaflet-gsheets`
 7. Customise the Google Sheets with the data you want
 8. Customise the JavaScript however you want, there are comments to show where to comment/uncomment code to enable/disable features.
 
