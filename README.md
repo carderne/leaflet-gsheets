@@ -1,4 +1,8 @@
 # leaflet-gsheets
+## ⚠️ This is currently broken ⚠️
+Google keeps changing the Sheets API, and so I can't really recommend using any of these methods for anything remotely production-ish until there's some kind of stability.
+
+See issue here: https://github.com/carderne/leaflet-gsheets/issues/7
 
 ### Note for people who've forked this in the past ⚠️
 This previously used [Tabletop.js](https://github.com/jsoma/tabletop) but apparently it will stop working in September 2020 (thanks Google), so I've switched this repo over to [PapaParse](https://github.com/mholt/PapaParse). Anyone using the old code should try to switch over!
