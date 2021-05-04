@@ -167,7 +167,7 @@ function addPoints(data) {
     marker.addTo(pointGroupLayer);
 
     // UNCOMMENT THIS LINE TO USE POPUPS
-    //marker.bindPopup('<h2>' + data[row].name + '</h2>There's a ' + data[row].description + ' here');
+    marker.bindPopup('<h2>' + data[row].name + '</h2>There's a ' + data[row].description + ' here');
 
     // COMMENT THE NEXT GROUP OF LINES TO DISABLE SIDEBAR FOR THE MARKERS
     marker.feature = {
