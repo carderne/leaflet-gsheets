@@ -93,6 +93,7 @@ function addGeoms(data) {
         el.properties = {
           name: data[row].name,
           description: data[row].description,
+          lat: "dsdd",
         };
         fc.features.push(el);
       });
