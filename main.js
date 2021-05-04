@@ -93,7 +93,6 @@ function addGeoms(data) {
         el.properties = {
           name: data[row].name,
           description: data[row].description,
-          lat: "dsdd",
         };
         fc.features.push(el);
       });
@@ -116,7 +115,7 @@ function addGeoms(data) {
         click: function (e) {
           // This zooms the map to the clicked geometry
           // Uncomment to enable
-          // map.fitBounds(e.target.getBounds());
+          map.fitBounds(e.target.getBounds());
 
           // if this isn't added, then map.click is also fired!
           L.DomEvent.stopPropagation(e);
