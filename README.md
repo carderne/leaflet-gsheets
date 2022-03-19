@@ -29,6 +29,12 @@ I explained the process in more length in my blog post here: [Leaflet maps with 
 7. Customise the Google Sheets with the data you want
 8. Customise the JavaScript however you want, there are comments to show where to comment/uncomment code to enable/disable features.
 
+9. Run a local server. First make sure you're in the directory containing `index.html` etc, and then run:
+```bash
+python3 -m http.server
+```
+10. Then open the URL it provides (probably `http://0.0.0.0:8000`) in a browser!
+
 ## Adding geometry data
 In [leaflet_points](https://docs.google.com/spreadsheets/d/1kjJVPF0LyaiaDYF8z_x23UulGciGtBALQ1a1pK0coRM/edit?usp=sharing) you can add latitude/longitude pairs for points.
 
