@@ -1,8 +1,4 @@
 # leaflet-gsheets
-### Note for people who've forked this in the past ⚠️
-This previously used [Tabletop.js](https://github.com/jsoma/tabletop) but Google has changed their API, so I've switched this repo over to [PapaParse](https://github.com/mholt/PapaParse). Anyone using the old code should try to switch over!
-
-### For new people, nothing to worry about! 👍
 How to create a simple [Leaflet](https://leafletjs.com/) web map that automatically pulls data from two simple Google Sheets tables. Sidebar created using [leaflet-sidebar-v2](https://github.com/nickpeihl/leaflet-sidebar-v2), and Google Sheets connection with [PapaParse](https://github.com/mholt/PapaParse).
 
 The resultant map can be seen here: [https://rdrn.me/leaflet-gsheets/](https://rdrn.me/leaflet-gsheets/)
